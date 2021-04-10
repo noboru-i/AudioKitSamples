@@ -67,7 +67,7 @@ struct PlayMidiWithSf2View: View {
         }
         .padding()
         .onAppear {
-            controller.setup()
+            controller.setup(preset: selectedBankPreset.preset, bank: selectedBankPreset.bank)
         }
         .onDisappear {
             controller.dispose()
@@ -91,7 +91,7 @@ class PlayMidiController {
 
     let sf2FilePath = "YAMAHA_RX5"
 
-    func setup() {
+    func setup(preset: Int, bank: Int) {
         AKManager.output = mixier
         do {
             try AKManager.start()
@@ -100,12 +100,7 @@ class PlayMidiController {
             return
         }
 
-        do {
-            try tapSampler.loadSoundFont(sf2FilePath, preset: 7, bank: kAUSampler_DefaultBankLSB)
-        } catch let error {
-            print("File not found. \(error.localizedDescription)")
-            return
-        }
+        changeSampler(preset: preset, bank: bank)
     }
 
     func dispose() {

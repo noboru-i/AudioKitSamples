@@ -17,6 +17,9 @@ struct MenuView: View {
                 NavigationLink(destination: ReadMidiView()) {
                     MenuItem(label: "Read MIDI")
                 }
+                NavigationLink(destination: MetronomeView()) {
+                    MenuItem(label: "Metronome")
+                }
             }
             .navigationTitle("Menu")
         }

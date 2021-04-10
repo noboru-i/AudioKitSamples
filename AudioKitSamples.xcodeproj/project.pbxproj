@@ -19,6 +19,7 @@
 		5158E8C126216C9300FAA798 /* PlayMidiWithSf2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5158E8C026216C9300FAA798 /* PlayMidiWithSf2View.swift */; };
 		5158E8D02621779900FAA798 /* YAMAHA_RX5.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 5158E8CF2621779900FAA798 /* YAMAHA_RX5.sf2 */; };
 		5158E8EB262181FF00FAA798 /* ReadMidiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5158E8EA262181FF00FAA798 /* ReadMidiView.swift */; };
+		5158E8F126218D2A00FAA798 /* MetronomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5158E8F026218D2A00FAA798 /* MetronomeView.swift */; };
 		8BD473F70896A866E09F2314 /* Pods_AudioKitSamplesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57234F984069381A23A87B39 /* Pods_AudioKitSamplesTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +60,7 @@
 		5158E8C026216C9300FAA798 /* PlayMidiWithSf2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayMidiWithSf2View.swift; sourceTree = "<group>"; };
 		5158E8CF2621779900FAA798 /* YAMAHA_RX5.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = YAMAHA_RX5.sf2; sourceTree = "<group>"; };
 		5158E8EA262181FF00FAA798 /* ReadMidiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadMidiView.swift; sourceTree = "<group>"; };
+		5158E8F026218D2A00FAA798 /* MetronomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetronomeView.swift; sourceTree = "<group>"; };
 		57234F984069381A23A87B39 /* Pods_AudioKitSamplesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AudioKitSamplesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7159800ACFC1E708BCB0BB48 /* Pods-AudioKitSamples.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AudioKitSamples.release.xcconfig"; path = "Target Support Files/Pods-AudioKitSamples/Pods-AudioKitSamples.release.xcconfig"; sourceTree = "<group>"; };
 		B7C8A176925224691694F32E /* Pods_AudioKitSamples_AudioKitSamplesUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AudioKitSamples_AudioKitSamplesUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -136,6 +138,7 @@
 				5158E8B42621699E00FAA798 /* Menu */,
 				5158E8BF26216C6F00FAA798 /* PlayMidiWithSf2 */,
 				5158E8E9262181D900FAA798 /* ReadMidi */,
+				5158E8EF26218CF700FAA798 /* Metronome */,
 				5158E8752621673E00FAA798 /* AudioKitSamplesApp.swift */,
 				5158E8792621673F00FAA798 /* Assets.xcassets */,
 				5158E87E2621673F00FAA798 /* Info.plist */,
@@ -202,6 +205,14 @@
 				5158E8EA262181FF00FAA798 /* ReadMidiView.swift */,
 			);
 			path = ReadMidi;
+			sourceTree = "<group>";
+		};
+		5158E8EF26218CF700FAA798 /* Metronome */ = {
+			isa = PBXGroup;
+			children = (
+				5158E8F026218D2A00FAA798 /* MetronomeView.swift */,
+			);
+			path = Metronome;
 			sourceTree = "<group>";
 		};
 		571828F6FF0B8ED2F3AB2B70 /* Frameworks */ = {
@@ -419,6 +430,7 @@
 				5158E8C126216C9300FAA798 /* PlayMidiWithSf2View.swift in Sources */,
 				5158E8BB26216AA400FAA798 /* MenuItem.swift in Sources */,
 				5158E8B6262169FC00FAA798 /* MenuView.swift in Sources */,
+				5158E8F126218D2A00FAA798 /* MetronomeView.swift in Sources */,
 				5158E8762621673E00FAA798 /* AudioKitSamplesApp.swift in Sources */,
 				5158E8EB262181FF00FAA798 /* ReadMidiView.swift in Sources */,
 			);
