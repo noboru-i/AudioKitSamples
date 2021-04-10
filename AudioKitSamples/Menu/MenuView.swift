@@ -17,6 +17,7 @@ struct MenuView: View {
             }
             .navigationTitle("Menu")
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
