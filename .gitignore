@@ -88,3 +88,6 @@ fastlane/test_output
 # https://github.com/johnno1962/injectionforxcode
 
 iOSInjectionProject/
+
+# Other files.
+AudioKitSamples/Resources/YAMAHA_RX5.sf2
