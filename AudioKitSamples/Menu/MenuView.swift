@@ -14,6 +14,9 @@ struct MenuView: View {
                 NavigationLink(destination: PlayMidiWithSf2View()) {
                     MenuItem(label: "Play MIDI with sf2")
                 }
+                NavigationLink(destination: ReadMidiView()) {
+                    MenuItem(label: "Read MIDI")
+                }
             }
             .navigationTitle("Menu")
         }
