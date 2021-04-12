@@ -21,6 +21,7 @@
 		5158E8EB262181FF00FAA798 /* ReadMidiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5158E8EA262181FF00FAA798 /* ReadMidiView.swift */; };
 		5158E8F126218D2A00FAA798 /* MetronomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5158E8F026218D2A00FAA798 /* MetronomeView.swift */; };
 		8BD473F70896A866E09F2314 /* Pods_AudioKitSamplesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57234F984069381A23A87B39 /* Pods_AudioKitSamplesTests.framework */; };
+		C51C2CA52624154900B9B4FA /* sample.mid in Resources */ = {isa = PBXBuildFile; fileRef = C51C2CA42624154900B9B4FA /* sample.mid */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +65,7 @@
 		57234F984069381A23A87B39 /* Pods_AudioKitSamplesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AudioKitSamplesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7159800ACFC1E708BCB0BB48 /* Pods-AudioKitSamples.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AudioKitSamples.release.xcconfig"; path = "Target Support Files/Pods-AudioKitSamples/Pods-AudioKitSamples.release.xcconfig"; sourceTree = "<group>"; };
 		B7C8A176925224691694F32E /* Pods_AudioKitSamples_AudioKitSamplesUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AudioKitSamples_AudioKitSamplesUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C51C2CA42624154900B9B4FA /* sample.mid */ = {isa = PBXFileReference; lastKnownFileType = audio.midi; path = sample.mid; sourceTree = "<group>"; };
 		C903FC70F359977B322EEC2F /* Pods-AudioKitSamples.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AudioKitSamples.debug.xcconfig"; path = "Target Support Files/Pods-AudioKitSamples/Pods-AudioKitSamples.debug.xcconfig"; sourceTree = "<group>"; };
 		CD59D1D4F220CE1BCB20F0FF /* Pods-AudioKitSamplesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AudioKitSamplesTests.release.xcconfig"; path = "Target Support Files/Pods-AudioKitSamplesTests/Pods-AudioKitSamplesTests.release.xcconfig"; sourceTree = "<group>"; };
 		D10E75C583FA15298A5104CE /* Pods-AudioKitSamplesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AudioKitSamplesTests.debug.xcconfig"; path = "Target Support Files/Pods-AudioKitSamplesTests/Pods-AudioKitSamplesTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -194,6 +196,7 @@
 		5158E8CB2621776F00FAA798 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C51C2CA42624154900B9B4FA /* sample.mid */,
 				5158E8CF2621779900FAA798 /* YAMAHA_RX5.sf2 */,
 			);
 			path = Resources;
@@ -331,6 +334,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C51C2CA52624154900B9B4FA /* sample.mid in Resources */,
 				5158E8D02621779900FAA798 /* YAMAHA_RX5.sf2 in Resources */,
 				5158E87D2621673F00FAA798 /* Preview Assets.xcassets in Resources */,
 				5158E87A2621673F00FAA798 /* Assets.xcassets in Resources */,
