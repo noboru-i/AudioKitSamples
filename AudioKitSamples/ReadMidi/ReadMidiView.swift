@@ -14,17 +14,28 @@ extension Data {
     }
 }
 
-struct ReadMidiView: View {
+struct ReadMidiView: View, MyProtocol {
     var controller = ReadMidiController()
 
     @State private var data: MidiData = MidiData(
         bpm: 60,
         tracks: []
     )
+    @State var isShowingPicker = false
+
+    func myFunc(_ url: URL) {
+        data = controller.setup(path: url.absoluteString)
+    }
 
     var body: some View {
         ScrollView() {
             VStack(alignment: .leading) {
+                Button("Load from file") {
+                    isShowingPicker = true
+                }
+                .sheet(isPresented: $isShowingPicker) {
+                    FilePickerController(callback: self)
+                }
                 Text("\(data.bpm) bpm")
                 ForEach(data.tracks.indices, id: \.self) { index in
                     let track = data.tracks[index]
@@ -55,6 +66,55 @@ struct ReadMidiView: View {
 struct ReadMidiView_Previews: PreviewProvider {
     static var previews: some View {
         ReadMidiView()
+    }
+}
+
+protocol MyProtocol {
+    func myFunc(_ url: URL)
+}
+
+struct FilePickerController: UIViewControllerRepresentable {
+    var callback: MyProtocol
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    
+    func updateUIViewController(_ uiViewController: UIDocumentPickerViewController, context: UIViewControllerRepresentableContext<FilePickerController>) {
+        // Update the controller
+    }
+    
+    func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
+        print("Making the picker")
+        let controller = UIDocumentPickerViewController(documentTypes: [String("public.data")], in: .open)
+        
+        controller.delegate = context.coordinator
+        print("Setup the delegate \(context.coordinator)")
+        
+        return controller
+    }
+    
+    class Coordinator: NSObject, UIDocumentPickerDelegate {
+        var parent: FilePickerController
+        
+        init(_ pickerController: FilePickerController) {
+            self.parent = pickerController
+            print("Setup a parent")
+            print("Callback: \(parent.callback)")
+        }
+       
+        func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+            print("2 Selected a document: \(urls[0])")
+            parent.callback.myFunc(urls[0])
+        }
+        
+        func documentPickerWasCancelled() {
+            print("Document picker was thrown away :(")
+        }
+        
+        deinit {
+            print("Coordinator going away")
+        }
     }
 }
 

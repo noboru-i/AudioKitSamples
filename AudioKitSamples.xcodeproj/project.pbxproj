@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2236F53D4FEA25595864F394 /* Pods_AudioKitSamples.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A65B23420EC03950A3EBDB2 /* Pods_AudioKitSamples.framework */; };
 		30C0173D99C157D68A9190DE /* Pods_AudioKitSamples_AudioKitSamplesUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7C8A176925224691694F32E /* Pods_AudioKitSamples_AudioKitSamplesUITests.framework */; };
+		513C78362624942600F034BB /* CreateMidiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513C78352624942600F034BB /* CreateMidiView.swift */; };
 		5158E8762621673E00FAA798 /* AudioKitSamplesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5158E8752621673E00FAA798 /* AudioKitSamplesApp.swift */; };
 		5158E87A2621673F00FAA798 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5158E8792621673F00FAA798 /* Assets.xcassets */; };
 		5158E87D2621673F00FAA798 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5158E87C2621673F00FAA798 /* Preview Assets.xcassets */; };
@@ -45,6 +46,8 @@
 		3A65B23420EC03950A3EBDB2 /* Pods_AudioKitSamples.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AudioKitSamples.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B993B7F466F2DBF73DF9F48 /* Pods-AudioKitSamples-AudioKitSamplesUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AudioKitSamples-AudioKitSamplesUITests.debug.xcconfig"; path = "Target Support Files/Pods-AudioKitSamples-AudioKitSamplesUITests/Pods-AudioKitSamples-AudioKitSamplesUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4938DC6A61CAB22297053EDC /* Pods-AudioKitSamples-AudioKitSamplesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AudioKitSamples-AudioKitSamplesUITests.release.xcconfig"; path = "Target Support Files/Pods-AudioKitSamples-AudioKitSamplesUITests/Pods-AudioKitSamples-AudioKitSamplesUITests.release.xcconfig"; sourceTree = "<group>"; };
+		513C78352624942600F034BB /* CreateMidiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMidiView.swift; sourceTree = "<group>"; };
+		513C78442624A72300F034BB /* AudioKitSamples.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AudioKitSamples.entitlements; sourceTree = "<group>"; };
 		5158E8722621673E00FAA798 /* AudioKitSamples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioKitSamples.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5158E8752621673E00FAA798 /* AudioKitSamplesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioKitSamplesApp.swift; sourceTree = "<group>"; };
 		5158E8792621673F00FAA798 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -112,6 +115,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		513C78342624940D00F034BB /* CreateMidi */ = {
+			isa = PBXGroup;
+			children = (
+				513C78352624942600F034BB /* CreateMidiView.swift */,
+			);
+			path = CreateMidi;
+			sourceTree = "<group>";
+		};
 		5158E8692621673E00FAA798 = {
 			isa = PBXGroup;
 			children = (
@@ -137,9 +148,11 @@
 		5158E8742621673E00FAA798 /* AudioKitSamples */ = {
 			isa = PBXGroup;
 			children = (
+				513C78442624A72300F034BB /* AudioKitSamples.entitlements */,
 				5158E8B42621699E00FAA798 /* Menu */,
 				5158E8BF26216C6F00FAA798 /* PlayMidiWithSf2 */,
 				5158E8E9262181D900FAA798 /* ReadMidi */,
+				513C78342624940D00F034BB /* CreateMidi */,
 				5158E8EF26218CF700FAA798 /* Metronome */,
 				5158E8752621673E00FAA798 /* AudioKitSamplesApp.swift */,
 				5158E8792621673F00FAA798 /* Assets.xcassets */,
@@ -432,6 +445,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5158E8C126216C9300FAA798 /* PlayMidiWithSf2View.swift in Sources */,
+				513C78362624942600F034BB /* CreateMidiView.swift in Sources */,
 				5158E8BB26216AA400FAA798 /* MenuItem.swift in Sources */,
 				5158E8B6262169FC00FAA798 /* MenuView.swift in Sources */,
 				5158E8F126218D2A00FAA798 /* MetronomeView.swift in Sources */,
@@ -594,6 +608,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = AudioKitSamples/AudioKitSamples.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"AudioKitSamples/Preview Content\"";
 				DEVELOPMENT_TEAM = 56W5SXE4HE;
@@ -617,6 +632,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = AudioKitSamples/AudioKitSamples.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"AudioKitSamples/Preview Content\"";
 				DEVELOPMENT_TEAM = 56W5SXE4HE;
