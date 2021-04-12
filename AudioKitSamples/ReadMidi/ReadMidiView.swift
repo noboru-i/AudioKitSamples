@@ -31,31 +31,15 @@ struct ReadMidiView: View {
                     Text("Track \(index + 1)")
                     
                     VStack(alignment: .leading) {
-                        let midiData = track.getMIDINoteData()
-                        ForEach(midiData.indices, id: \.self) { index in
-                            let note = midiData[index]
-                            let beat = String(format: "%.1f", note.position.beats)
-                            Text("\(beat), Note: \(note.noteNumber), CH: \(note.channel), V: \(note.velocity)")
-                        }
-
-                        ForEach(track.programChangeEvents.indices, id: \.self) { index in
-                            let pc = track.programChangeEvents[index]
-                            let time = String(format: "%.1f", pc.time)
-                            Text("PC \(time), Number: \(pc.number), CH: \(pc.channel)")
-                        }
-
                         ForEach((track.eventData ?? []).indices, id: \.self) { index in
-                            let event = track.eventData![index]
-                            let time = String(format: "%.1f", event.time)
-                            let data = Data(bytes: event.data!, count: Int(event.dataSize))
-                            Text("Event \(time), \(event.type), Data: \(data.hexEncodedString()), DataSize: \(event.dataSize)")
+                            let message = debugEventData(track.eventData![index])
+                            Text(message)
                         }
                     }
                     .padding()
                 }
             }
             .frame(maxWidth: .infinity)
-            .padding()
         }
         .frame(maxWidth: .infinity)
         .onAppear {
@@ -80,7 +64,7 @@ class ReadMidiController {
     func setup(path: String) -> MidiData {
         sequencer = AKAppleSequencer(fromURL: URL(fileURLWithPath: path))
         print("tempo \(Int(sequencer.getTempo(at: 0)))")
-        
+
         return MidiData(
             bpm: Int(sequencer.getTempo(at: 0)),
             tracks: sequencer.tracks
@@ -95,3 +79,69 @@ struct MidiData {
     var bpm: Int
     var tracks: [AudioKit.AKMusicTrack]
 }
+
+func typeToName(_ type: MusicEventType) -> String {
+    switch type {
+    case kMusicEventType_MIDIChannelMessage:
+        return "MIDIChannelMessage"
+    case kMusicEventType_MIDINoteMessage:
+        return "MIDINoteMessage"
+    default:
+        return "unknown \(type)"
+    }
+}
+
+func debugEventData(_ event: AppleMIDIEvent) -> String {
+    switch event.type {
+    case kMusicEventType_MIDINoteMessage:
+        let data = UnsafePointer<MIDINoteMessage>(event.data?.assumingMemoryBound(to: MIDINoteMessage.self))
+        guard let channel = data?.pointee.channel,
+            let note = data?.pointee.note,
+            let velocity = data?.pointee.velocity,
+            let dur = data?.pointee.duration else {
+                return "Problem with raw midi note message"
+        }
+        return "Note @: \(formatTime(event.time)) - note: \(note) - velocity: \(velocity) - duration: \(formatDuration(dur)) - CH: \(channel)"
+    case kMusicEventType_Meta:
+        let data = UnsafePointer<MIDIMetaEvent>(event.data?.assumingMemoryBound(to: MIDIMetaEvent.self))
+        guard let midiData = data?.pointee.data,
+            let length = data?.pointee.dataLength,
+            let type = data?.pointee.metaEventType else {
+                return "Problem with raw midi meta message"
+        }
+        return "Meta @ \(formatTime(event.time)) - size: \(length) - type: \(type.toH()) - data: \(midiData)"
+    case kMusicEventType_MIDIChannelMessage:
+        let data = UnsafePointer<MIDIChannelMessage>(event.data?.assumingMemoryBound(to: MIDIChannelMessage.self))
+        guard let data1 = data?.pointee.data1,
+            let data2 = data?.pointee.data2,
+            let statusData = data?.pointee.status else {
+                return "Problem with raw midi channel message"
+        }
+        if let statusType = AKMIDIStatus(byte: statusData)?.type {
+            switch statusType {
+            case .programChange:
+                return "Program Change @ \(formatTime(event.time)) - program: \(data1) - CH: \(statusData.lowBit)"
+            default:
+                return "Channel Message @ \(formatTime(event.time)) - data1: \(data1) - data2: \(data2) - status: \(statusType)"
+            }
+        }
+    default:
+        return "Other Event @ \(formatTime(event.time))"
+    }
+    return ""
+}
+
+func formatTime(_ time: MusicTimeStamp) -> String {
+    return String(format: "%0.2f", time)
+}
+
+func formatDuration(_ duration: Float32) -> String {
+    return String(format: "%0.3f", duration)
+}
+
+extension UInt8 {
+    func toH() -> String {
+        return String(format: "%02X", self)
+    }
+}
+
