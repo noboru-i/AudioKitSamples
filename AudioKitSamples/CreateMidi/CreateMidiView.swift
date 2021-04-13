@@ -32,14 +32,7 @@ struct CreateMidiView_Previews: PreviewProvider {
 class CreateMidiController {
     private var sequencer: AKAppleSequencer!
     
-    func setup(path: String) -> MidiData {
-        sequencer = AKAppleSequencer(fromURL: URL(fileURLWithPath: path))
-        print("tempo \(Int(sequencer.getTempo(at: 0)))")
-
-        return MidiData(
-            bpm: Int(sequencer.getTempo(at: 0)),
-            tracks: sequencer.tracks
-        )
+    func setup(path: String) {
     }
 
     func dispose() {
@@ -47,20 +40,26 @@ class CreateMidiController {
     
     func create1() -> Data? {
         let noteInfoList: [AKMIDINoteData] = [
-            AKMIDINoteData(noteNumber: 60, velocity: 128, channel: 0, duration: AKDuration(beats: 1), position: AKDuration(beats: 0))
+            AKMIDINoteData(noteNumber: 60, velocity: 100, channel: 0, duration: AKDuration(beats: 0.2), position: AKDuration(beats: 1))
         ]
-        let bpm = 60.0
+        let bpm = 61.0
 
         // create MIDI for output
         let outputSequncer = AKAppleSequencer()
         outputSequncer.setTempo(bpm)
-        outputSequncer.setLength(AKDuration(beats: 8))
+        outputSequncer.setLength(AKDuration(beats: 16))
 
         // save input data
+        let trackMeta = outputSequncer.newTrack()
         let track = outputSequncer.newTrack()
+        print("track \(track.debugDescription)")
+        track?.setLength(AKDuration(beats: 16))
         noteInfoList.forEach { info in
             track?.add(midiNoteData: info)
         }
+        
+        // test control data
+        track?.addController(AKMIDIControl.cc32.rawValue, value: 1, position: AKDuration(beats: 0.01))
 
         guard let data = outputSequncer.genData() else {
             print("error in genData")

@@ -14,7 +14,7 @@ extension Data {
     }
 }
 
-struct ReadMidiView: View, MyProtocol {
+struct ReadMidiView: View, FilePickerDelegate {
     var controller = ReadMidiController()
 
     @State private var data: MidiData = MidiData(
@@ -23,8 +23,8 @@ struct ReadMidiView: View, MyProtocol {
     )
     @State var isShowingPicker = false
 
-    func myFunc(_ url: URL) {
-        data = controller.setup(path: url.absoluteString)
+    func onFileSelected(_ url: URL) {
+        data = controller.setup(url: url)
     }
 
     var body: some View {
@@ -34,7 +34,7 @@ struct ReadMidiView: View, MyProtocol {
                     isShowingPicker = true
                 }
                 .sheet(isPresented: $isShowingPicker) {
-                    FilePickerController(callback: self)
+                    FilePickerController(delegate: self)
                 }
                 Text("\(data.bpm) bpm")
                 ForEach(data.tracks.indices, id: \.self) { index in
@@ -54,7 +54,10 @@ struct ReadMidiView: View, MyProtocol {
         }
         .frame(maxWidth: .infinity)
         .onAppear {
-            data = controller.setup(path: Bundle.main.path(forResource: "sample", ofType: "mid") ?? "")
+            guard let url = Bundle.main.url(forResource: "sample", withExtension: "mid") else {
+                return
+            }
+            data = controller.setup(url: url)
         }
         .onDisappear {
             controller.dispose()
@@ -69,60 +72,12 @@ struct ReadMidiView_Previews: PreviewProvider {
     }
 }
 
-protocol MyProtocol {
-    func myFunc(_ url: URL)
-}
-
-struct FilePickerController: UIViewControllerRepresentable {
-    var callback: MyProtocol
-    
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-    
-    func updateUIViewController(_ uiViewController: UIDocumentPickerViewController, context: UIViewControllerRepresentableContext<FilePickerController>) {
-        // Update the controller
-    }
-    
-    func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
-        print("Making the picker")
-        let controller = UIDocumentPickerViewController(documentTypes: [String("public.data")], in: .open)
-        
-        controller.delegate = context.coordinator
-        print("Setup the delegate \(context.coordinator)")
-        
-        return controller
-    }
-    
-    class Coordinator: NSObject, UIDocumentPickerDelegate {
-        var parent: FilePickerController
-        
-        init(_ pickerController: FilePickerController) {
-            self.parent = pickerController
-            print("Setup a parent")
-            print("Callback: \(parent.callback)")
-        }
-       
-        func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-            print("2 Selected a document: \(urls[0])")
-            parent.callback.myFunc(urls[0])
-        }
-        
-        func documentPickerWasCancelled() {
-            print("Document picker was thrown away :(")
-        }
-        
-        deinit {
-            print("Coordinator going away")
-        }
-    }
-}
-
 class ReadMidiController {
     private var sequencer: AKAppleSequencer!
     
-    func setup(path: String) -> MidiData {
-        sequencer = AKAppleSequencer(fromURL: URL(fileURLWithPath: path))
+    func setup(url: URL) -> MidiData {
+        print("setup: file \(url)")
+        sequencer = AKAppleSequencer(fromURL: url)
         print("tempo \(Int(sequencer.getTempo(at: 0)))")
 
         return MidiData(
@@ -138,17 +93,6 @@ class ReadMidiController {
 struct MidiData {
     var bpm: Int
     var tracks: [AudioKit.AKMusicTrack]
-}
-
-func typeToName(_ type: MusicEventType) -> String {
-    switch type {
-    case kMusicEventType_MIDIChannelMessage:
-        return "MIDIChannelMessage"
-    case kMusicEventType_MIDINoteMessage:
-        return "MIDINoteMessage"
-    default:
-        return "unknown \(type)"
-    }
 }
 
 func debugEventData(_ event: AppleMIDIEvent) -> String {
