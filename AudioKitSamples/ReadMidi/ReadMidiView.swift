@@ -21,10 +21,12 @@ struct ReadMidiView: View, FilePickerDelegate {
         bpm: 60,
         tracks: []
     )
+    @State private var url: URL?
     @State var isShowingPicker = false
 
     func onFileSelected(_ url: URL) {
-        data = controller.setup(url: url)
+        self.url = url
+        data = controller.dumpMidiData(url: url)
     }
 
     var body: some View {
@@ -36,11 +38,18 @@ struct ReadMidiView: View, FilePickerDelegate {
                 .sheet(isPresented: $isShowingPicker) {
                     FilePickerController(delegate: self)
                 }
+                Button("Play") {
+                    guard let url = url else {
+                        return
+                    }
+                    controller.play(url: url)
+                }
+
                 Text("\(data.bpm) bpm")
                 ForEach(data.tracks.indices, id: \.self) { index in
                     let track = data.tracks[index]
                     Text("Track \(index + 1)")
-                    
+
                     VStack(alignment: .leading) {
                         ForEach((track.eventData ?? []).indices, id: \.self) { index in
                             let message = debugEventData(track.eventData![index])
@@ -54,10 +63,11 @@ struct ReadMidiView: View, FilePickerDelegate {
         }
         .frame(maxWidth: .infinity)
         .onAppear {
+            controller.setup()
             guard let url = Bundle.main.url(forResource: "sample", withExtension: "mid") else {
                 return
             }
-            data = controller.setup(url: url)
+            data = controller.dumpMidiData(url: url)
         }
         .onDisappear {
             controller.dispose()
@@ -73,20 +83,54 @@ struct ReadMidiView_Previews: PreviewProvider {
 }
 
 class ReadMidiController {
-    private var sequencer: AKAppleSequencer!
-    
-    func setup(url: URL) -> MidiData {
-        print("setup: file \(url)")
-        sequencer = AKAppleSequencer(fromURL: url)
-        print("tempo \(Int(sequencer.getTempo(at: 0)))")
+    lazy private var sampler = AKMIDISampler(midiOutputName: nil)
+    lazy private var mixier = AKMixer(sampler)
 
-        return MidiData(
-            bpm: Int(sequencer.getTempo(at: 0)),
-            tracks: sequencer.tracks
-        )
+    private var dumpSequencer: AKAppleSequencer!
+
+    private var sequencer: AKAppleSequencer!
+
+    let sf2FilePath = "YAMAHA_RX5"
+    
+    func setup() {
+        AKManager.output = mixier
+        do {
+            try AKManager.start()
+        } catch let error {
+            print("AKManager.start error. \(error)")
+            return
+        }
     }
 
     func dispose() {
+    }
+    
+    func dumpMidiData(url: URL) -> MidiData {
+        print("dumpMidiData: file \(url)")
+        dumpSequencer = AKAppleSequencer(fromURL: url)
+        print("tempo \(Int(dumpSequencer.getTempo(at: 0)))")
+
+        return MidiData(
+            bpm: Int(dumpSequencer.getTempo(at: 0)),
+            tracks: dumpSequencer.tracks
+        )
+    }
+    
+    func play(url: URL) {
+        sequencer = AKAppleSequencer(fromURL: url)
+        
+        for i in sequencer.tracks {
+            i.setMIDIOutput(sampler.midiIn)
+        }
+        
+        do {
+            try sampler.loadSoundFont(sf2FilePath, preset: 7, bank: 0)
+        } catch let error {
+            print("Failed to changeSampler. \(error.localizedDescription)")
+            return
+        }
+
+        sequencer.play()
     }
 }
 
